@@ -1,0 +1,50 @@
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo 1') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/Shantanumajan6/project.git'
+            }
+        }
+
+        stage('Packaging Repo 1') {
+            steps {
+                sh 'mvn clean package'
+         
+            }
+        }
+
+        stage('Deploy Repo 1 WAR') {
+            steps {
+              
+              sh sudo rm -rf /mnt/servers/apache-tomcat-10.1.60/webapps/LoginWebApp.war*
+              sh sudo cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.60/webapps/
+                
+            }
+        }
+
+        stage('Clone Repo 2') {
+            steps {
+                sh 'git clone -b master https://github.com/Shantanumajan6/myapp-project.git'
+            }
+        }
+
+        stage('Packaging Repo 2') {
+            steps {
+                sh 'cd myapp-project && mvn clean package'
+                sh 'ls -l myapp-project/target/*.war'
+            }
+        }
+
+        stage('Deploy Repo 2 WAR') {
+            steps {
+                sh '''
+                sudo cp myapp-project/target/java17-mysql-webapp-1.0.war /mnt/servers/apache-tomcat-10.1.60/webapps/
+                '''
+            }
+        }
+    }
+}

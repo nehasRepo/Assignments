@@ -1,0 +1,34 @@
+
+
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Repo Clone') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/nehasRepo/jenkins.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                
+                   sh  sudo rm -f /mnt/servers/apache-tomcat-10.1.60/webapps/LoginWebApp.war*
+
+                sh    sudo cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.60/webapps/
+                
+            }
+        }
+    }
+}
+

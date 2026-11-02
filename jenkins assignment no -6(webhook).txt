@@ -1,0 +1,30 @@
+pipeline{
+agent any
+stages{
+stage("clone repo"){
+steps{
+  sh git clone  -b main "https://github.com/nehasRepo/jenkins.git"
+  
+
+}
+}
+stage("install httpd"){
+steps{
+   sh sudo yum install httpd -y'
+  
+
+}
+}
+stage("deploying"){
+steps{
+
+     sh cp index.html /var/www/html/index.html 
+	 sh chmod -R 777  /var/www/html/index.html
+	 sh systemctl start httpd
+	 
+}
+}
+
+}
+
+}

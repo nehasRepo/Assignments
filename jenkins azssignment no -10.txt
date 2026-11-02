@@ -1,0 +1,90 @@
+
+pipeline {
+    agent none
+
+    stages {
+
+        stage('Clone Repo on Slave 1') {
+            agent {
+                label {
+                    label 'slave1'
+                    customWorkspace '/mnt/slave1'
+                }
+            }
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Shantanumajan6/project.git'
+            }
+        }
+
+        stage('Build Package on Slave 1') {
+            agent {
+                label {
+                    label 'slave1'
+                    customWorkspace '/mnt/slave1'
+                }
+            }
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy Package on Slave 1') {
+            agent {
+                label {
+                    label 'slave1'
+                    customWorkspace '/mnt/slave1'
+                }
+            }
+            steps {
+                
+                   
+               steps {
+    sh "sudo rm -f /mnt/servers/apache-tomcat-10.1.60/webapps/LoginWebApp.war*"
+
+    sh "sudo cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.60/webapps/"
+}
+            }
+        }
+
+        stage('Clone Repo on Slave 2') {
+            agent {
+                label{
+                    label 'slave2'
+                    customWorkspace '/mnt/slave2'
+                }
+            }
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/nehasRepo/jenkins.git'
+            }
+        }
+
+        stage('Build Package on Slave 2') {
+            agent {
+                label {
+                    label 'slave2'
+                    customWorkspace '/mnt/slave2'
+                }
+            }
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy Package on Slave 2') {
+            agent {
+                node {
+                    label 'slave2'
+                    customWorkspace '/mnt/slave2'
+                }
+            }
+            steps {
+               steps {
+    sh "sudo rm -f /mnt/servers/apache-tomcat-10.1.60/webapps/LoginWebApp.war*"
+
+    sh "sudo cp target/LoginWebApp.war /mnt/servers/apache-tomcat-10.1.60/webapps/"
+}
+        }
+    }
+}

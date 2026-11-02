@@ -1,0 +1,65 @@
+3 jobs kr
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo 1') {
+            steps {
+                dir('repo1') {
+                    git branch: 'main',
+                        url: 'https://github.com/nehasRepo/jenkins.git'
+                }
+            }
+        }
+
+        stage('Installing HTTPD') {
+            steps {
+                sh 'sudo yum install httpd -y'
+                sh 'sudo systemctl enable httpd'
+            }
+        }
+
+        stage('Deploy Repo 1') {
+            steps {
+                sh 'sudo cp repo1/index.html /var/www/html/index.html'
+                sh 'sudo chmod 644 /var/www/html/index.html'
+                sh 'sudo systemctl restart httpd'
+            }
+        }
+
+        stage('Clone Repo 2') {
+            steps {
+                dir('repo2') {
+                    git branch: 'main',
+                        url: 'https://github.com/nehasRepo/jenkins2.git'
+                }
+            }
+        }
+
+        stage('Deploy Repo 2') {
+            steps {
+                sh 'sudo cp repo2/index.html /var/www/html/index.html'
+                sh 'sudo chmod 644 /var/www/html/index.html'
+                sh 'sudo systemctl restart httpd'
+            }
+        }
+
+        stage('Clone Repo 3') {
+            steps {
+                dir('repo3') {
+                    git branch: 'main',
+                        url: 'https://github.com/nehasRepo/jenkins-3.git'
+                }
+            }
+        }
+
+        stage('Deploy Repo 3') {
+            steps {
+                sh 'sudo cp repo3/index.html /var/www/html/index.html'
+                sh 'sudo chmod 644 /var/www/html/index.html'
+                sh 'sudo systemctl restart httpd'
+            }
+        }
+    }
+}
+```

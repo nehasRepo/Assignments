@@ -1,0 +1,112 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/nehasRepo/jenkins.git'
+            }
+        }
+
+        stage('Installing HTTPD') {
+            steps {
+                sh 'sudo yum install httpd -y'
+            }
+        }
+
+        stage('Deploying') {
+            steps {
+                sh 'sudo cp index.html /var/www/html/index.html'
+                sh 'sudo chmod 644 /var/www/html/index.html'
+                sh 'sudo systemctl enable httpd'
+                sh 'sudo systemctl restart httpd'
+            }
+        }
+    }
+}
+
+	 
+	 
+}
+}
+}
+}
+
+
+
+
+## 
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/nehasRepo/jenkins2.git'
+            }
+        }
+
+        stage('Installing HTTPD') {
+            steps {
+                sh 'sudo yum install httpd -y'
+            }
+        }
+
+        stage('Deploying') {
+            steps {
+                sh 'sudo cp index.html /var/www/html/index.html'
+                sh 'sudo chmod 644 /var/www/html/index.html'
+                sh 'sudo systemctl enable httpd'
+                sh 'sudo systemctl restart httpd'
+            }
+        }
+    }
+}
+
+	 
+	 
+}
+}
+}
+}
+
+##
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/nehasRepo/jenkins-3.git'
+            }
+        }
+
+        stage('Installing HTTPD') {
+            steps {
+                sh 'sudo yum install httpd -y'
+            }
+        }
+
+        stage('Deploying') {
+            steps {
+                sh 'sudo cp index.html /var/www/html/index.html'
+                sh 'sudo chmod 644 /var/www/html/index.html'
+                sh 'sudo systemctl enable httpd'
+                sh 'sudo systemctl restart httpd'
+            }
+        }
+    }
+}
+
+	 
+	 
+}
+}
+}
+}
